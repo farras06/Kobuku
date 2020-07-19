@@ -261,7 +261,7 @@ class AdminPayment extends React.Component {
                                 </div>
 
                                 <div className="ml-4">
-                                    {this.state.status != "accepted" && this.state.transfer == null ?
+                                    {this.state.status != "accepted" && this.state.transfer != null ?
                                         <ButtonUI
                                             className="w-100"
                                             onClick={() => this.confirmHandler(this.state.transactionId)}

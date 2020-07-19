@@ -59,14 +59,18 @@ class EditProfile extends React.Component {
         };
 
         if (username == "" || fullName == "" || oldPassword == "" || newPassword == "" || newRePassword == "" || email == "" || address == "") {
-            alert("Fill all the empty field")
+            swal("Fail", "Fill all the empty field", "error")
+        } if (newPassword != newRePassword) {
+            swal("Fail", "New Password isn't Match", "error")
         }
 
-        if (newPassword != newRePassword) {
-            alert("password isn't match")
+        if ((username != "" || fullName != "" || oldPassword != "" || newPassword != "" || newRePassword != "" || email != "" || address != "") && (newPassword == newRePassword)) {
+            this.props.onEditProfile(newUser)
         }
 
-        this.props.onEditProfile(newUser)
+
+
+
     };
 
 
@@ -151,7 +155,7 @@ class EditProfile extends React.Component {
                 <div className="d-flex justify-content-center">
                     <ButtonUI
                         type="contained"
-                        onClick={this.editProfileBtnHandler}
+                        onClick={() => this.editProfileBtnHandler()}
                         className="mt-4"
                     >
                         Save
@@ -167,13 +171,37 @@ class EditProfile extends React.Component {
         return (
             <div className="container">
                 <div className="row mt-5">
-                    <div className="col-5 mt-5">
+                    <div
+                        className="col-5 mt-5"
+                        style={{ border: "1px solid black ", padding: "10px", borderRadius: "10px" }}
+                    >
                         <h3> Current Profile : </h3>
                         <p className="mt-4"> Your Current Information</p>
-                        <p className="mt-5"> username : {this.props.user.username}</p>
-                        <p className="mt-4"> Name : {this.props.user.fullName}</p>
-                        <p className="mt-4"> Email : {this.props.user.email}</p>
-                        <p className="mt-4"> Address : {this.props.user.address}</p>
+
+                        <center>
+
+                            <div className="d-flex flex-column mt-5" style={{ height: "60px", width: "80%", marginTop: "20px", borderRadius: "8px", border: "1px solid wheat" }}>
+                                <div style={{ borderTopLeftRadius: "8px", borderTopRightRadius: "8px", backgroundColor: "#fcd4c4" }}> <h6>Username</h6></div>
+                                <div> < h6 className="mt-1">{this.props.user.username}</h6></div>
+                            </div>
+
+                            <div className="d-flex flex-column mt-5" style={{ height: "60px", width: "80%", marginTop: "20px", borderRadius: "8px", border: "1px solid wheat" }}>
+                                <div style={{ borderTopLeftRadius: "8px", borderTopRightRadius: "8px", backgroundColor: "#fcd4c4" }}> <h6>Full Name</h6></div>
+                                <div> < h6 className="mt-1">{this.props.user.fullName}</h6></div>
+                            </div>
+
+                            <div className="d-flex flex-column mt-5" style={{ height: "60px", width: "80%", marginTop: "20px", borderRadius: "8px", border: "1px solid wheat" }}>
+                                <div style={{ borderTopLeftRadius: "8px", borderTopRightRadius: "8px", backgroundColor: "#fcd4c4" }}> <h6>Email</h6></div>
+                                <div> < h6 className="mt-1">{this.props.user.email}</h6></div>
+                            </div>
+
+                            <div className="d-flex flex-column mt-5" style={{ height: "60px", width: "80%", marginTop: "20px", borderRadius: "8px", border: "1px solid wheat" }}>
+                                <div style={{ borderTopLeftRadius: "8px", borderTopRightRadius: "8px", backgroundColor: "#fcd4c4" }}> <h6>Address</h6></div>
+                                <div> < h6 className="mt-1">{this.props.user.address}</h6></div>
+                            </div>
+                        </center>
+
+
                     </div>
                     <div className="col-5">
                         {this.renderAuthComponent()}

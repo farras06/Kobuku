@@ -1,8 +1,11 @@
 :root {
-  --accent-default: #3c64b1;
-  --accent-dark: #1e4693;
-  --accent-light: #5a82cf;
+  --accent-default: #e7aa8d;
+  --accent-dark: #e88354;
+  --accent-light: #f4ccbc;
+
+  
 }
+
 
 .custom-btn {
   padding: 12px 18px;
@@ -23,47 +26,50 @@
 }
 
 .custom-btn-outlined {
-  border: 1px solid var(--accent-default);
-  color: var(--accent-default);
+  border: 1px solid #e7aa8d;
+  border-radius: 10px;
+  color: #e7aa8d;
 }
 
 .custom-btn-outlined:hover {
-  border: 1px solid var(--accent-light);
-  color: var(--accent-light);
+  border: 1px solid #f4ccbc;
+  color: #f4ccbc;
 }
 
 .custom-btn-outlined:active {
-  border: 1px solid var(--accent-dark);
-  color: var(--accent-dark);
+  border: 1px solid #e88354;
+  color: #e88354;
 }
 
 .custom-btn-contained {
-  border: 1px solid var(--accent-default);
-  background-color: var(--accent-default);
+  border: 1px solid #e7aa8d;
+  border-radius: 10px;
+  background-color: #e7aa8d;
   color: white;
 }
 
 .custom-btn-contained:hover {
-  border: 1px solid var(--accent-light);
-  background-color: var(--accent-light);
+  border: 1px solid #f4ccbc;
+  background-color: #f4ccbc;
   color: white;
 }
 
 .custom-btn-contained:active {
-  border: 1px solid var(--accent-dark);
-  background-color: var(--accent-dark);
+  border: 1px solid #e88354;
+  background-color: #e88354;
   color: white;
 }
 
 .custom-btn-textual {
-  color: var(--accent-default);
+  color: #e7aa8d;
+  border-radius: 10px;
   padding: 0 !important;
 }
 
 .custom-btn-textual:hover {
-  color: var(--accent-light);
+  color: #f4ccbc;
 }
 
 .custom-btn-textual:active {
-  color: var(--accent-dark);
+  color: #e88354;
 }

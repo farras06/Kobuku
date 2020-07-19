@@ -78,13 +78,16 @@ class AuthScreen extends React.Component {
 
     if (username == "" || fullName == "" || password == "" || email == "" || rePassword == "" || address == "") {
       alert("Fill all the empty field")
-    }
-
-    if (password != rePassword) {
+    } if (password != rePassword) {
       alert("password isn't match")
+
+    }
+    if ((username != "" || fullName != "" || password != "" || email != "" || rePassword != "" || address != "") && (password == rePassword)) {
+      this.props.onRegister(newUser)
     }
 
-    this.props.onRegister(newUser)
+
+
   };
 
   loginBtnHandler = () => {
@@ -121,10 +124,22 @@ class AuthScreen extends React.Component {
 
   renderAuthComponent = () => {
     return (
-      <div className="mt-5 justify-content-center">
-        <p className="mt-4 text-center">
+      <div className="mt-5 justify-content-center"
+        style={{
+          border: "1px solid black",
+          paddingTop: "10px",
+          paddingBottom: "20px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          borderRadius: "10px"
+        }}
+      >
+        <p className="mt-4 text-center"
+          style={{ borderBottom: "1px solid black", padding: "10px" }}
+        >
           Welcome back.
-            <br /> Please, login to your account
+            <br />
+          Please, login to your account
         </p>
 
         <TextField
@@ -156,6 +171,7 @@ class AuthScreen extends React.Component {
               onClick={this.loginBtnHandler}
               type="contained"
               className="mt-4"
+              style={{ width: "90%" }}
             >
               Login
             </ButtonUI>
@@ -167,20 +183,23 @@ class AuthScreen extends React.Component {
             onClick={this.forgetBtnHandler}
             type="contained"
             className="mt-4"
+            style={{ textDecoration: "underline", cursor: "pointer", color: "blue" }}
           >
-            Forgot Your Password Password ?
+            Forgot Your Password ?
           </text>
         </div>
 
         <div className="d-flex">
           <text
             onClick={() => this.registerBtnHandler()}
+            style={{ textDecoration: "underline", cursor: "pointer", color: "blue" }}
           > Doesn't have an Account ? Register Now
 
           </text>
         </div>
-
       </div>
+
+
     );
   }
 

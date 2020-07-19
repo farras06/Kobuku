@@ -73,7 +73,7 @@ class App extends React.Component {
 
             {this.renderAdminRoutes()}
           </Switch>
-          <div style={{ height: "10px" }}></div>
+          <div style={{ height: "100px" }}></div>
           <Footer />
         </>
       );

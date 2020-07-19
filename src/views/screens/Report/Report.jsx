@@ -157,28 +157,49 @@ class Report extends React.Component {
         return (
             <div>
                 <div className="row">
-                    <div className="col-4">
-
-                        <TextField
-                            value={this.state.search.productName}
-                            onChange={(e) => this.inputHandler(e, "productName", "search")}
-                            onKeyUp={() => { this.getReportData(this.state.search.categoryName) }}
-                            type="text"
-                            placeholder="Insert Your Book title"
+                    <div className="col-4 justify-content-center m-2"
+                        style={{ borderRight: "1px solid black" }}
+                    >
+                        <h3
+                            style={{ textAlign: "center" }}
                         >
-                        </TextField>
+                            Filter The Report</h3>
 
-                        <select className="justify-item-center form-control"
-                            value={this.state.search.categoryName}
-                            onClick={(e) => { this.getReportData(this.state.search.categoryName) }}
-                            onChange={(e) => this.inputHandler(e, "categoryName", "search")} >
-                            <option value=""> Select Book Category</option>
-                            <option value="All"> All Categories</option>
-                            {this.renderCategoryName()}
-                        </select>
+                        <div className="mt-4">
+                            <TextField
+                                value={this.state.search.productName}
+                                onChange={(e) => this.inputHandler(e, "productName", "search")}
+                                onKeyUp={() => { this.getReportData(this.state.search.categoryName) }}
+                                type="text"
+                                placeholder="Seacrh by Book title"
+                            >
+                            </TextField>
+                        </div>
+
+                        <div className="mt-4">
+                            <select className="justify-item-center form-control"
+                                value={this.state.search.categoryName}
+                                onClick={(e) => { this.getReportData(this.state.search.categoryName) }}
+                                onChange={(e) => this.inputHandler(e, "categoryName", "search")} >
+                                <option value="" disabled> Select Book Category</option>
+                                <option value="All"> All Categories</option>
+                                {this.renderCategoryName()}
+                            </select>
+                        </div>
+
+                        <div className="mt-4">
+                            <select
+                                className="justify-item-center form-control"
+                                value={this.state.search.sortBy}
+                                onClick={(e) => { this.getReportData(this.state.search.categoryName) }}
+                                onChange={(e) => this.inputHandler(e, "sortBy", "search")} >
+                                <option value="asc"> A-Z </option>
+                                <option value="desc"> Z-A </option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div className="col-8">
+                    <div className="col-7">
                         {this.renderChart()}
 
                     </div>

@@ -3,6 +3,9 @@ import "./AdminDashboard.css";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
 import Axios from "axios";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
 import { API_URL } from "../../../constants/API";
 
 import ButtonUI from "../../components/Button/Button";
@@ -166,17 +169,17 @@ class AdminDashboard extends React.Component {
                                         {
                                                 category.map((val, idx) => {
                                                     return (
-                                                        <div className="row mt-4">
-                                                            <h6 className="mt-2 ml-3 mr-4">
-                                                                <span style={{ fontWeight: "normal" }}> {val.categoryName}</span>
+                                                        <div className="row mt-2">
+                                                            <h6 className="ml-3 mr-4">
+                                                                <span style={{ fontWeight: "normal", marginRight: "10px" }}> {val.categoryName}</span>
+                                                                <FontAwesomeIcon
+                                                                    style={{ cursor: "pointer" }}
+                                                                    onClick={(_) => this.deleteCategoriesFromProduct(id, val.id)}
+                                                                    icon={faTimes}
+                                                                >
+                                                                </FontAwesomeIcon>
                                                             </h6>
 
-                                                            <ButtonUI
-                                                                onClick={(_) => this.deleteCategoriesFromProduct(id, val.id)}
-                                                                type="contained"
-                                                            >
-                                                                Delete
-                                                             </ButtonUI>
                                                         </div>
                                                     )
                                                 })
@@ -246,7 +249,7 @@ class AdminDashboard extends React.Component {
         Axios.post(`${API_URL}/category/addCategory`, this.state.addCategoryForm)
             .then((res) => {
                 console.log(res)
-                swal("Success!", "Your Category has been added to the list", "success");
+                swal("Success!", "Your New Category has Been Added", "success");
                 this.setState({
                     addCategoryForm: {
                         categoryName: ''
@@ -256,7 +259,7 @@ class AdminDashboard extends React.Component {
             })
             .catch((err) => {
                 console.log(err)
-                swal("Error!", "Your Category could not be added to the list", "error");
+                swal("Error!", "Your Category Has been Removed", "error");
             })
     }
 
@@ -265,7 +268,7 @@ class AdminDashboard extends React.Component {
         Axios.post(`${API_URL}/products/addProduct`, this.state.createForm)
             .then((res) => {
                 console.log(res)
-                swal("Success!", "Your item has been added to the list", "success");
+                swal("Success!", "Your New Product has been Added", "success");
                 this.setState({
                     createForm: {
                         productName: "",
@@ -279,7 +282,7 @@ class AdminDashboard extends React.Component {
             })
             .catch((err) => {
                 console.log(err)
-                swal("Error!", "Your item could not be added to the list", "error");
+                swal("Error!", "Your New Product Could not be Created", "error");
             });
     };
 
@@ -304,12 +307,12 @@ class AdminDashboard extends React.Component {
     editProductHandler = () => {
         Axios.put(`${API_URL}/products/editProduct/${this.state.editForm.id}`, this.state.editForm)
             .then((res) => {
-                swal("Success!", "Your item has been edited", "success");
+                swal("Success!", "Your Product has been Edited", "success");
                 this.setState({ modalOpenProduct: false });
                 this.getProductList();
             })
             .catch((err) => {
-                swal("Error!", "Your item could not be edited", "error");
+                swal("Error!", "Your Product could not be Edited", "error");
                 console.log(err);
             });
     };
@@ -334,9 +337,11 @@ class AdminDashboard extends React.Component {
         Axios.delete(`${API_URL}/products/deleteProduct/${id}`)
             .then((res) => {
                 this.getProductList();
+                swal("Success!", "Your Product has been Removed", "success")
             })
             .catch((err) => {
                 console.log(err);
+                swal("Erorr!", "Fail to Remove the Product", "error")
             });
     };
 
@@ -346,9 +351,11 @@ class AdminDashboard extends React.Component {
             .then((res) => {
                 this.getProductList();
                 this.getCategory()
+                swal("Success!", "Your Category has been Removed", "success")
             })
             .catch((err) => {
                 console.log(err);
+                swal("Erorr!", "Fail to Remove the Category", "error")
             });
     };
 
@@ -372,10 +379,12 @@ class AdminDashboard extends React.Component {
             .then((res) => {
                 console.log(res)
                 this.getProductList();
+                swal("Success!", "Your Category has been Added to the Product", "success")
 
             })
             .catch((err) => {
                 console.log(err);
+                swal("Erorr!", "Fail to Added Category to the Product", "error")
             });
     }
 

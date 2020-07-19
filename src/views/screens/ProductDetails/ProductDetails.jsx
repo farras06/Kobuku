@@ -35,7 +35,6 @@ class ProductDetails extends React.Component {
                             val.product.id == this.state.productData.id
                         )
                     })
-                    // alert(checkItems);
                     if (checkItems == -1) {
                         Axios.post(
                             `${API_URL}/cart/addToCart/${this.props.user.id}/${this.state.productData.id}`,
@@ -78,14 +77,14 @@ class ProductDetails extends React.Component {
     }
 
     render() {
-        const { image, productName, price, description, category } = this.state.productData
+        const { image, productName, price, description, category, stockUser } = this.state.productData
 
         return (
             <div>
                 <div className="container">
                     <div className="row py-4">
                         <div className="col-6 text-center">
-                            <img style={{ width: "100%", objectFit: "contain", height: "550px" }}
+                            <img style={{ width: "100%", objectFit: "contain", height: "400px" }}
                                 src={image}
                                 alt=""
                             />
@@ -94,7 +93,9 @@ class ProductDetails extends React.Component {
                         <div className="col-6 d-flex flex-column justify-content-center">
 
                             <h3>{productName}</h3>
-                            <div>
+
+                            <h5> {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price)}</h5>
+                            <div> Genres :
                                 {
                                     category.map((val, idx) => {
                                         if (idx == 0) {
@@ -110,10 +111,8 @@ class ProductDetails extends React.Component {
                                 }
                             </div>
 
-                            <h4> {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price)}</h4>
-                            <p className="mt-4">
-                                {description}
-                            </p>
+                            <p className="mt-2"> Avability : {stockUser} Books </p>
+                            <p className="mt-4">{description}</p>
 
                             <div className="d-flex flex-row mt-4">
                                 <ButtonUI

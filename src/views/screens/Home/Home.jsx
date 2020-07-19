@@ -1,60 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Carousel, CarouselControl, CarouselItem, ButtonGroup, FormControl } from "reactstrap";
+import { Carousel, CarouselControl, CarouselItem, ButtonGroup, FormControl, InputGroup, } from "reactstrap";
 import Axios from "axios";
 import { connect } from "react-redux"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faShippingFast,
-  faMoneyBillWave,
-  faHeadset,
-} from "@fortawesome/free-solid-svg-icons";
+import { faShippingFast, faMoneyBillWave, faHeadset, faStepBackward, faStepForward, faFastForward, } from "@fortawesome/free-solid-svg-icons";
 import { searchBarHandler, ProductCategory } from "../../../redux/actions"
 import "./Home.css";
 
 import ProductCard from "../../components/Cards/ProductCard";
 
-import homage_to_catalonia from "../../../assets/images/Showcase/homage_to_catalonia.jpeg"
-import home from '../../../assets/images/home.jpg'
-import a1984 from "../../../assets/images/Showcase/a1984.jpeg"
 import ButtonUI from "../../components/Button/Button";
 import CarouselShowcaseItem from "./CarouselShowcaseItem.tsx";
 import Colors from "../../../constants/Colors";
 import { API_URL } from "../../../constants/API";
 import "../../components/Navbar/Navbar.css"
 import TextField from "../../components/TextField/TextField";
-
-const dummy = [
-  {
-    productName: "1984",
-    image: a1984,
-    writer: "George Orwel",
-    Published: "1949",
-    desc: `1984 is a dystopian novella by George Orwell published in 1949, which follows the life of Winston Smith, a low ranking member 
-    of ‘the Party’, who is frustrated by the omnipresent eyes of the party, and its ominous ruler Big Brother.
-    ‘Big Brother’ controls every aspect of people’s lives. It has invented the language ‘Newspeak’ in an attempt 
-    to completely eliminate political rebellion; created ‘Throughtcrimes’ to stop people even thinking of things
-    considered rebellious. The party controls what people read, speak, say and do with the threat that if they
-    disobey, they will be sent to the dreaded Room 101 as a looming punishment.
-    Orwell effectively explores the themes of mass media control, government surveillance, totalitarianism and 
-    how a dictator can manipulate and control history, thoughts, and lives in such a way that no one can escape it. `,
-    id: 1,
-
-  },
-  {
-    productName: "Homage to Catalonia",
-    image: homage_to_catalonia,
-    writer: "George Orwel",
-    Published: "1938",
-    desc: `Unleashed on 17 July 1936 by a military coup against the democratically elected government of the Second 
-    Republic, the Spanish civil war was a rehearsal for the second world war. The British, French and American governments
-    stood aside and permitted General Francisco Franco, with the substantial aid of Hitler and Mussolini, to defeat the republic. 
-    To this day, the war is remembered by many as “the last great cause”, the war of the volunteers of the International Brigades,
-    of the bombing of Guernica and of the mini-civil war within the civil war fought in Barcelona as CNT anarchists and
-    the Poum’s quasi-Trotskyists battled forces of the Catalan government, the Generalitat, backed by the communists of the PSUC.`,
-    id: 2,
-  },
-];
 
 
 class Home extends React.Component {
@@ -78,6 +39,7 @@ class Home extends React.Component {
     itemsPerPage: 2,
     totalPages: 0,
     totalElements: 0,
+    carouselItem: []
   };
 
   inputHandler = (e, field, form) => {
@@ -91,7 +53,7 @@ class Home extends React.Component {
   };
 
   renderCarouselItems = () => {
-    return dummy.map(({ image, productName, desc, writer, Published, id }) => {
+    return this.state.carouselItem.map(({ image, productName, description, price, id, stockUser, sold }) => {
       return (
         <CarouselItem
           onExiting={() => this.setState({ animating: true })}
@@ -101,11 +63,18 @@ class Home extends React.Component {
           <div className="carousel-item-home">
             <div className="container position-relative">
               <div className="row" style={{ paddingTop: "80px" }}>
-                <div className="col-6 text-white position-relative">
+                <div className="col-4 text-white position-relative">
                   <h2>{productName}</h2>
-                  <p className="mt-4"> Wtiter : {writer}</p>
-                  <p className="mt-4"> Published : {Published}</p>
-                  <p className="mt-4">{desc}</p>
+                  <p className="mt-4"> Price : {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", }).format(price)}</p>
+                  <p className="mt-2"> Avability : {stockUser}</p>
+                  <p className="mt-2"> Sold : {sold}</p>
+                  <p className="mt-4">{description}</p>
+                  <Link to={`/product/${id}`}>
+                    <ButtonUI className="mt-3" type="contained">
+                      BUY NOW
+                    </ButtonUI>
+                  </Link>
+
                 </div>
                 <div className="col-6 d-flex flex-row justify-content-center">
                   <img src={image} alt="" style={{ height: "400px", widht: "260px" }} />
@@ -129,7 +98,7 @@ class Home extends React.Component {
   nextHandler = () => {
     if (this.state.animating) return;
     let nextIndex =
-      this.state.activeIndex === dummy.length - 1
+      this.state.activeIndex === this.state.carouselItem.length - 1
         ? 0
         : this.state.activeIndex + 1;
     this.setState({ activeIndex: nextIndex });
@@ -139,7 +108,7 @@ class Home extends React.Component {
     if (this.state.animating) return;
     let prevIndex =
       this.state.activeIndex === 0
-        ? dummy.length - 1
+        ? this.state.carouselItem.length - 1
         : this.state.activeIndex - 1;
     this.setState({ activeIndex: prevIndex });
   };
@@ -164,9 +133,9 @@ class Home extends React.Component {
   };
 
   componentDidMount() {
-    this.getProduct();
     this.getCategory();
     this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage)
+    this.getCarouselItem()
   }
 
   enterPressed = (e) => {
@@ -181,6 +150,16 @@ class Home extends React.Component {
     Axios.get(`${API_URL}/category/getCategory`)
       .then((res) => {
         this.setState({ categoryList: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  getCarouselItem = () => {
+    Axios.get(`${API_URL}/products/getProduct/carousel/`)
+      .then((res) => {
+        this.setState({ carouselItem: res.data });
       })
       .catch((err) => {
         console.log(err);
@@ -300,44 +279,47 @@ class Home extends React.Component {
       return (
         <div className="row">
           <div
-            className="col-12 justify-item-center"
+            className="col-12"
           >
-            <ButtonGroup>
-
-
+            <InputGroup
+              className="justify-content-center"
+            >
               <ButtonUI disabled={currentPage === 1 ? true : false}
-                onClick={this.firstPage}><FontAwesomeIcon />
+                onClick={this.firstPage}><FontAwesomeIcon
+                  className=""
+                />
               First
             </ButtonUI>
 
               <ButtonUI disabled={currentPage === 1 ? true : false}
-                onClick={this.prevPage}><FontAwesomeIcon />
-              Prev
+                onClick={this.prevPage}
+                className="ml-3"
+              >
+                Prev
             </ButtonUI>
 
-              <div className={"page-num bg-light"} name="currentPage" value={currentPage}
-                onChange={this.changePage} >
+              <div className="ml-3 justify-content-center align-item-center"
+                style={{ "float": "left" }}>
+                Showing Page {currentPage} of {totalPages}
               </div>
 
               <ButtonUI disabled={currentPage === totalPages ? true : false}
-                onClick={this.nextPage}><FontAwesomeIcon />
-              Next
+                onClick={this.nextPage}
+                className="ml-3"
+              >
+                Next
             </ButtonUI>
 
               <ButtonUI disabled={currentPage === totalPages ? true : false}
-                onClick={this.lastPage}><FontAwesomeIcon />
-              Last
+                onClick={this.lastPage}
+                className="ml-3">
+                Last
             </ButtonUI>
 
-            </ButtonGroup>
+            </InputGroup>
           </div>
 
 
-          <text
-            className="text-center"
-            style={{ "float": "left" }}>
-            Showing Page {currentPage} of {totalPages}
-          </text>
         </div>
       )
     } else if (this.state.activePage == "paket") {
@@ -374,6 +356,7 @@ class Home extends React.Component {
 
         </div>
 
+
         <div className="row p-4">
 
           <div className="col-3">
@@ -395,7 +378,7 @@ class Home extends React.Component {
               <TextField
                 value={this.state.search.productName}
                 onChange={(e) => this.inputHandler(e, "productName", "search")}
-                onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName) }}
+                onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
                 type="text"
                 placeholder="Insert Your Book title"
               >
@@ -411,7 +394,7 @@ class Home extends React.Component {
               <TextField
                 value={this.state.search.minPrice}
                 onChange={(e) => this.inputHandler(e, "minPrice", "search")}
-                onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName) }}
+                onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
                 type="text"
                 placeholder="Insert Minimal Proce"
               >
@@ -428,7 +411,7 @@ class Home extends React.Component {
               <TextField
                 value={this.state.search.maxPrice}
                 onChange={(e) => this.inputHandler(e, "maxPrice", "search")}
-                onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName) }}
+                onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
                 type="text"
                 placeholder="Insert Maximal Price"
               >
@@ -445,10 +428,12 @@ class Home extends React.Component {
               className="justify-item-center form-control"
               value={this.state.search.orderBy}
               onChange={(e) => this.inputHandler(e, "orderBy", "search")}
-              onClick={(e) => { this.getBestSellerDataByFilterSort(this.state.search.categoryName) }}>
+              onClick={(e) => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}>
               <option value="price"> Price</option>
               <option value="productName"> Product Name </option>
-              <option value="sold">Sold</option>
+              {this.props.user.role == "admin" ?
+                <option value="sold">Sold</option> : null
+              }
             </select>
           </div>
 
@@ -457,10 +442,10 @@ class Home extends React.Component {
             <select
               className="justify-item-center form-control"
               value={this.state.search.sortBy}
-              onClick={(e) => { this.getBestSellerDataByFilterSort(this.state.search.categoryName) }}
+              onClick={(e) => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
               onChange={(e) => this.inputHandler(e, "sortBy", "search")} >
               <option value="asc"> A-Z </option>
-              <option value="dsc"> Z-A </option>
+              <option value="desc"> Z-A </option>
             </select>
           </div>
           <div className="col-2"></div>
@@ -477,54 +462,7 @@ class Home extends React.Component {
           {this.PageHandler()}
         </div>
 
-        <div
-          className="py-5"
-          style={{ marginTop: "128px", backgroundColor: Colors.lightestGray }}
-        >
-          <div className="container">
-            <div className="row">
-              <div className="col-4 text-center d-flex flex-column align-items-center">
-                <FontAwesomeIcon
-                  icon={faShippingFast}
-                  style={{ fontSize: 70, color: Colors.accentLight }}
-                />
-                <h3 className="font-weight-bolder mt-4">FAST SHIPPING</h3>
-                <p className="mt-4">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic
-                  impedit facilis nam vitae, accusamus doloribus alias
-                  repellendus veniam voluptates ad doloremque sequi est, at
-                  fugit pariatur quisquam ratione, earum sapiente.
-                </p>
-              </div>
-              <div className="col-4 text-center d-flex flex-column align-items-center">
-                <FontAwesomeIcon
-                  icon={faMoneyBillWave}
-                  style={{ fontSize: 70, color: Colors.accentLight }}
-                />
-                <h3 className="font-weight-bolder mt-4">100% REFUND</h3>
-                <p className="mt-4">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic
-                  impedit facilis nam vitae, accusamus doloribus alias
-                  repellendus veniam voluptates ad doloremque sequi est, at
-                  fugit pariatur quisquam ratione, earum sapiente.
-                </p>
-              </div>
-              <div className="col-4 text-center d-flex flex-column align-items-center">
-                <FontAwesomeIcon
-                  icon={faHeadset}
-                  style={{ fontSize: 70, color: Colors.accentLight }}
-                />
-                <h3 className="font-weight-bolder mt-4">SUPPORT 24/7</h3>
-                <p className="mt-4">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic
-                  impedit facilis nam vitae, accusamus doloribus alias
-                  repellendus veniam voluptates ad doloremque sequi est, at
-                  fugit pariatur quisquam ratione, earum sapiente.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     );
   }

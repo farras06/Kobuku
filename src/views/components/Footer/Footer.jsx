@@ -39,31 +39,26 @@ class Footer extends React.Component {
                     <MDBRow className="mt-3">
                         <MDBCol md="3" lg="4" xl="3" className="mb-4">
                             <h6 className="text-uppercase font-weight-bold">
-                                <strong>Company name</strong>
+                                <strong>Kobuku</strong>
                             </h6>
                             <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
                             <p>
-                                Here you can use rows and columns here to organize your footer
-                                content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit.
+                                Kobuku is The world's most international online bookstore offering many kind of books. our shop also come with alot of advantages, remember our motto "Reader always Reading"
                     </p>
                         </MDBCol>
                         <MDBCol md="2" lg="2" xl="2" className="mb-4">
                             <h6 className="text-uppercase font-weight-bold">
-                                <strong>Products</strong>
+                                <strong>Our Advantages</strong>
                             </h6>
                             <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
                             <p>
-                                <a href="#!">MDBootstrap</a>
+                                <a href="#!">Fast Shipping</a>
                             </p>
                             <p>
-                                <a href="#!">MDWordPress</a>
+                                <a href="#!">100% Refund</a>
                             </p>
                             <p>
-                                <a href="#!">BrandFlow</a>
-                            </p>
-                            <p>
-                                <a href="#!">Bootstrap Angular</a>
+                                <a href="#!">24/7 Support</a>
                             </p>
                         </MDBCol>
                         <MDBCol md="3" lg="2" xl="2" className="mb-4">

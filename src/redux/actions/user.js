@@ -3,6 +3,8 @@ import { API_URL } from "../../constants/API";
 import Cookie from "universal-cookie";
 import userTypes from "../types/user";
 
+import swal from "sweetalert"
+
 const { ON_LOGIN_FAIL, ON_LOGIN_SUCCESS, ON_LOGOUT_SUCCESS } = userTypes;
 
 const cookie = new Cookie();
@@ -24,7 +26,7 @@ export const loginHandler = (userData) => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        swal("Fail", `${err.response.data.message} for ${username} `, "error");
       });
   };
 };
@@ -66,6 +68,7 @@ export const registerHandler = (userData) => {
       })
       .catch((err) => {
         console.log(err);
+        swal("Fail", err.response.data.message, "error");
       });
   };
 };
@@ -82,7 +85,7 @@ export const EditProfileHandler = (userData) => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        swal("Fail", err.response.data.message, "error");
       });
   };
 };
@@ -93,10 +96,10 @@ export const forgetPasswordHandler = (userData) => {
     Axios.get(`${API_URL}/users/forgetPassword/${username}`)
       .then((res) => {
         console.log(res.data);
-        alert(res.data)
+        swal("Success!", "Check Your Email to Change the Password", "success")
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        swal("Fail", err.response.data.message, "error");
       });
   }
 }
@@ -108,7 +111,7 @@ export const saveForgetPasswordHandler = (userData) => {
     Axios.put(`${API_URL}/users/saveForgetPassword/${username}/${newPassword}`)
       .then((res) => {
         console.log(res.data);
-        alert(res.data)
+        swal("Success!", "Your New Password is Saved", "success")
       })
       .catch((err) => {
         console.log(err);

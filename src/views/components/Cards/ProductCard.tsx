@@ -12,7 +12,8 @@ interface ProductCardData {
   review?: number;
   image?: string;
   category?: [];
-  stockUser?: number
+  stockUser?: number;
+  sold?: number
 }
 
 type ProductCardProps = {
@@ -22,7 +23,7 @@ type ProductCardProps = {
 
 class ProductCard extends React.Component<ProductCardProps> {
   render() {
-    const { id, productName, price, category, image } = this.props.data;
+    const { id, productName, price, stockUser, image, sold } = this.props.data;
 
     return (
       <div className={`product-card d-inline-block ${this.props.className}`}>
@@ -35,13 +36,13 @@ class ProductCard extends React.Component<ProductCardProps> {
         </Link>
         <div>
           <p className="mt-3">{productName}</p>
-          <h5 style={{ fontWeight: "bolder" }}>
+          <h6 style={{ fontWeight: "bolder" }}>
             {new Intl.NumberFormat("id-ID", {
               style: "currency",
               currency: "IDR",
             }).format(price)}
-          </h5>
-
+          </h6>
+          <p> Avability : {stockUser} Books </p>
         </div>
         <div className="d-flex flex-row align-items-center justify-content-between mt-2">
 
@@ -50,5 +51,7 @@ class ProductCard extends React.Component<ProductCardProps> {
     );
   }
 }
+
+
 
 export default ProductCard;

@@ -28,7 +28,7 @@ class History extends React.Component {
     getUserTransaction = (val) => {
         Axios.get(`${API_URL}/transaction/userTransaction/${this.props.user.id}?status=${val}`)
             .then(res => {
-                this.setState({ getUserTransaction: res.data })
+                this.setState({ getUserTransaction: res.data, status: val })
                 console.log(this.state.getUserTransaction)
             })
             .catch(err => {
@@ -40,11 +40,13 @@ class History extends React.Component {
         this.setState({ modalOpenTranser: !this.state.modalOpenTranser });
     };
 
-    uploadBtnHanlder = (id, transfer) => {
+    optionBtnHanlder = (id, transfer, status) => {
+        console.log(this.state.status)
         this.setState({
             transactionId: id,
             modalOpenTranser: true,
-            transfer: transfer
+            transfer: transfer,
+            status: status
         });
     };
 
@@ -102,10 +104,10 @@ class History extends React.Component {
                         <td>
                             <div className="d-flex flex-column">
                                 <ButtonUI
-                                    onClick={() => this.uploadBtnHanlder(id, transfer)}
+                                    onClick={() => this.optionBtnHanlder(id, transfer, status)}
                                     type="contained"
                                 >
-                                    Transfer
+                                    Option
                                     </ButtonUI>
 
                             </div>
@@ -232,16 +234,18 @@ class History extends React.Component {
                                 </img>
                             </div>
 
-                            <div className="col-6 mt-3">
-                                Image :
+                            {this.state.status != "accepted" ?
+                                <div className="col-6 mt-3">
+                                    Image :
                                     <input className="mt-3 ml-4"
-                                    type="file"
-                                    name="file"
-                                    onChange={(e) => {
-                                        this.fileChangeHandler(e, "selectedImage");
-                                    }}
-                                />
-                            </div>
+                                        type="file"
+                                        name="file"
+                                        onChange={(e) => {
+                                            this.fileChangeHandler(e, "selectedImage");
+                                        }}
+                                    />
+                                </div> : null
+                            }
 
                             <div className="d-flex flex-row py-5">
                                 <div className="col-5  offset-1">
@@ -254,7 +258,7 @@ class History extends React.Component {
                                     </ButtonUI>
                                 </div>
 
-                                {this.state.transfer != '' ?
+                                {this.state.status != "accepted" ?
 
                                     <div className=" col-5 ">
                                         <ButtonUI
