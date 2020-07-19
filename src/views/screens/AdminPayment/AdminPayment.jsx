@@ -66,6 +66,7 @@ class AdminPayment extends React.Component {
                 console.log(res)
                 this.getUserTransaction()
                 this.setState({ modalOpenOption: false });
+                swal("Success!", "The Transaction has been Accepted", "success")
             })
             .catch((err) => {
                 console.log(err)
@@ -80,6 +81,7 @@ class AdminPayment extends React.Component {
                 console.log(res)
                 this.getUserTransaction()
                 this.setState({ modalOpenOption: false });
+                swal("Success!", "The Transaction has been Rejected", "success")
             })
             .catch((err) => {
                 console.log(err)
@@ -108,6 +110,7 @@ class AdminPayment extends React.Component {
                         }}
                     >
                         <td> {idx + 1} </td>
+                        <td> {id} </td>
                         <td> {user.username} </td>
                         <td> {purchaseDate} </td>
                         <td> {confirmDate} </td>
@@ -133,7 +136,6 @@ class AdminPayment extends React.Component {
                         <td className="" colSpan={3}>
                             <div className="d-flex justify-content-around align-items-center">
                                 <div className="d-flex">
-                                    {/* <img src={email} alt="" /> */}
                                     <div className="d-flex flex-column ml-4 justify-content-center">
                                         {transactionDetail.map((value, idx) => {
                                             return (
@@ -213,6 +215,7 @@ class AdminPayment extends React.Component {
                         <thead>
                             <tr>
                                 <th>NO</th>
+                                <th>Transaction No </th>
                                 <th>User Name</th>
                                 <th>Transaction Date</th>
                                 <th>Completed Date</th>
@@ -261,7 +264,7 @@ class AdminPayment extends React.Component {
                                 </div>
 
                                 <div className="ml-4">
-                                    {this.state.status != "accepted" && this.state.transfer != null ?
+                                    {(this.state.status != "accepted") && (this.state.transfer != null) && (this.state.transfer != "") ?
                                         <ButtonUI
                                             className="w-100"
                                             onClick={() => this.confirmHandler(this.state.transactionId)}

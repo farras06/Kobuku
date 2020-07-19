@@ -33,10 +33,9 @@ class Home extends React.Component {
       orderBy: 'productName',
       sortBy: 'asc'
     },
-    activePage: "product",
     currentPage: 0,
     currentPagePaket: 0,
-    itemsPerPage: 2,
+    itemsPerPage: 6,
     totalPages: 0,
     totalElements: 0,
     carouselItem: []
@@ -178,7 +177,7 @@ class Home extends React.Component {
     console.log(this.state.search)
     currentPage -= 1
     if (val == "All") {
-      Axios.get(`${API_URL}/products/${this.state.search.minPrice}/${this.state.search.maxPrice}/${this.state.search.orderBy}/${this.state.search.sortBy}/?productName=${this.state.search.productName}&page=${currentPage}&size=2`)
+      Axios.get(`${API_URL}/products/${this.state.search.minPrice}/${this.state.search.maxPrice}/${this.state.search.orderBy}/${this.state.search.sortBy}/?productName=${this.state.search.productName}&page=${currentPage}&size=6`)
         .then((res) => {
           console.log(res.data)
           console.log(this.state.search)
@@ -193,7 +192,7 @@ class Home extends React.Component {
           console.log(err)
         })
     } else {
-      Axios.get(`${API_URL}/products/${this.state.search.minPrice}/category/${this.state.search.maxPrice}/${this.state.search.orderBy}/${this.state.search.sortBy}/?productName=${this.state.search.productName}&categoryName=${val}&page=${currentPage}&size=2`)
+      Axios.get(`${API_URL}/products/${this.state.search.minPrice}/category/${this.state.search.maxPrice}/${this.state.search.orderBy}/${this.state.search.sortBy}/?productName=${this.state.search.productName}&categoryName=${val}&page=${currentPage}&size=6`)
         .then((res) => {
           console.log(res.data)
           this.setState({
@@ -211,11 +210,8 @@ class Home extends React.Component {
 
   changePage = event => {
     let targetPage = parseInt(event.target.value)
-    if (this.state.activePage == "product") {
-      this.getBestSellerDataByFilterSort(this.state.search.categoryName, targetPage);
-    } else {
-      this.getBestSellerPaketByFilterSort(this.state.search.categoryName, targetPage);
-    }
+    this.getBestSellerDataByFilterSort(this.state.search.categoryName, targetPage);
+
     this.setState({
       [event.target.name]: targetPage
     })
@@ -223,110 +219,87 @@ class Home extends React.Component {
   // button untuk balik ke page pertama 
   firstPage = () => {
     let firstPage = 0;
-    if (this.state.activePage == "product") {
-      if (this.state.currentPage > firstPage) {
-        this.getBestSellerDataByFilterSort(this.state.search.categoryName, firstPage)
-      }
-    } else {
-      if (this.state.currentPagePaket > firstPage) {
-        this.getBestSellerPaketByFilterSort(this.state.search.categoryName, firstPage);
-      }
+    if (this.state.currentPage > firstPage) {
+      this.getBestSellerDataByFilterSort(this.state.search.categoryName, firstPage)
     }
+
   }
   // button untuk kembali ke page sebelumnya
   prevPage = () => {
     let prevPage = 1;
-    if (this.state.activePage == "product") {
-      if (this.state.currentPage > prevPage) {
-        this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage - prevPage)
-      }
-    } else {
-      if (this.state.currentPagePaket > prevPage) {
-        this.getBestSellerPaketByFilterSort(this.state.search.categoryName, this.state.currentPagePaket - prevPage);
-      }
+
+    if (this.state.currentPage > prevPage) {
+      this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage - prevPage)
     }
   }
   // button untuk maju ke page selanjutnya
   nextPage = () => {
-    if (this.state.activePage == "product") {
-      if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.itemsPerPage)) {
-        this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage + 1)
-      }
-    } else {
-      if (this.state.currentPagePaket < Math.ceil(this.state.totalElements / this.state.itemsPerPage)) {
-        this.getBestSellerPaketByFilterSort(this.state.search.categoryName, this.state.currentPagePaket + 1)
-      }
+
+    if (this.state.currentPage < Math.ceil(this.state.totalElements / this.state.itemsPerPage)) {
+      this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage + 1)
     }
+
   }
   // button untuk maju ke page terakhir
   lastPage = () => {
     let condition = Math.ceil(this.state.totalElements / this.state.itemsPerPage)
-    let conditionPaket = Math.ceil(this.state.totalElements / this.state.itemsPerPage)
-    if (this.state.activePage == "product") {
-      if (this.state.currentPage < condition) {
-        this.getBestSellerDataByFilterSort(this.state.search.categoryName, condition)
-      }
-    } else {
-      if (this.state.currentPagePaket < condition) {
-        this.getBestSellerPaketByFilterSort(this.state.search.categoryName, conditionPaket)
-      }
+
+    if (this.state.currentPage < condition) {
+      this.getBestSellerDataByFilterSort(this.state.search.categoryName, condition)
     }
+
   }
 
   PageHandler = () => {
     const { currentPage, totalPages } = this.state;
-    if (this.state.activePage == "product") {
-      return (
-        <div className="row">
-          <div
-            className="col-12"
+
+    return (
+      <div className="row">
+        <div
+          className="col-12"
+        >
+          <InputGroup
+            className="justify-content-center"
           >
-            <InputGroup
-              className="justify-content-center"
-            >
-              <ButtonUI disabled={currentPage === 1 ? true : false}
-                onClick={this.firstPage}><FontAwesomeIcon
-                  className=""
-                />
+            <ButtonUI disabled={currentPage === 1 ? true : false}
+              onClick={this.firstPage}><FontAwesomeIcon
+                className=""
+              />
               First
             </ButtonUI>
 
-              <ButtonUI disabled={currentPage === 1 ? true : false}
-                onClick={this.prevPage}
-                className="ml-3"
-              >
-                Prev
+            <ButtonUI disabled={currentPage === 1 ? true : false}
+              onClick={this.prevPage}
+              className="ml-3"
+            >
+              Prev
             </ButtonUI>
 
-              <div className="ml-3 justify-content-center align-item-center"
-                style={{ "float": "left" }}>
-                Showing Page {currentPage} of {totalPages}
-              </div>
+            <div className="ml-3 justify-content-center align-item-center"
+              style={{ "float": "left" }}>
+              Showing Page {currentPage} of {totalPages}
+            </div>
 
-              <ButtonUI disabled={currentPage === totalPages ? true : false}
-                onClick={this.nextPage}
-                className="ml-3"
-              >
-                Next
+            <ButtonUI disabled={currentPage === totalPages ? true : false}
+              onClick={this.nextPage}
+              className="ml-3"
+            >
+              Next
             </ButtonUI>
 
-              <ButtonUI disabled={currentPage === totalPages ? true : false}
-                onClick={this.lastPage}
-                className="ml-3">
-                Last
+            <ButtonUI disabled={currentPage === totalPages ? true : false}
+              onClick={this.lastPage}
+              className="ml-3">
+              Last
             </ButtonUI>
 
-            </InputGroup>
-          </div>
-
-
+          </InputGroup>
         </div>
-      )
-    } else if (this.state.activePage == "paket") {
-      return (
-        this.renderPaket()
-      )
-    }
+
+
+      </div>
+    )
+
   }
 
   render() {
@@ -356,8 +329,116 @@ class Home extends React.Component {
 
         </div>
 
+        <div className="row mt-5">
+          <div className="col-4 justify-content-center ml-5" >
 
-        <div className="row p-4">
+            <h2 className="text-center font-weight-bolder mt-5">Filter Product</h2>
+
+            <h5 style={{ textAlign: "left" }}> Product Name</h5>
+
+            <div className="mt-2 mb-4">
+              <TextField
+                value={this.state.search.productName}
+                onChange={(e) => this.inputHandler(e, "productName", "search")}
+                onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
+                type="text"
+                placeholder="Insert Your Book title"
+              >
+              </TextField>
+
+            </div>
+
+            <h5 style={{ textAlign: "left" }}> Category</h5>
+
+            <div className="mt-2 mb-4">
+              <select className="justify-item-center form-control"
+                value={this.state.search.categoryName}
+                onClick={(e) => { this.getReportData(this.state.search.categoryName) }}
+                onChange={(e) => this.inputHandler(e, "categoryName", "search")} >
+                <option value="" disabled> Select Book Category</option>
+                <option value="All"> All Categories</option>
+                {this.renderCategoryName()}
+              </select>
+            </div>
+
+            <div className="row ml-1">
+              <div>
+                <h5 style={{ textAlign: "left" }}> Minimal Price</h5>
+                <div className="mt2 mb-4">
+                  <TextField
+                    value={this.state.search.minPrice}
+                    onChange={(e) => this.inputHandler(e, "minPrice", "search")}
+                    onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
+                    type="text"
+                    placeholder="Insert Minimal Proce"
+                  >
+                  </TextField>
+                </div>
+              </div>
+
+              <div>
+                <h5 className="ml-2" style={{ textAlign: "left" }}> Maximal Price</h5>
+                <div className="mt-2 mb-4 ml-2">
+                  <TextField
+                    value={this.state.search.maxPrice}
+                    onChange={(e) => this.inputHandler(e, "maxPrice", "search")}
+                    onKeyUp={() => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
+                    type="text"
+                    placeholder="Insert Maximal Price"
+                  >
+                  </TextField>
+                </div>
+              </div>
+            </div>
+
+            <h5 style={{ textAlign: "left" }}> Order By</h5>
+
+            <div className="mt-2 mb-4">
+              <select
+                className="justify-item-center form-control"
+                value={this.state.search.orderBy}
+                onChange={(e) => this.inputHandler(e, "orderBy", "search")}
+                onClick={(e) => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}>
+                <option value="price"> Price</option>
+                <option value="productName"> Product Name </option>
+                {this.props.user.role == "admin" ?
+                  <option value="sold">Sold</option> : null
+                }
+              </select>
+            </div>
+
+            <h5 style={{ textAlign: "left" }}> Sort Orientation</h5>
+
+            <div className="mt-2 mb-4">
+              <select
+                className="justify-item-center form-control"
+                value={this.state.search.sortBy}
+                onClick={(e) => { this.getBestSellerDataByFilterSort(this.state.search.categoryName, this.state.currentPage) }}
+                onChange={(e) => this.inputHandler(e, "sortBy", "search")} >
+                <option value="asc"> A-Z </option>
+                <option value="desc"> Z-A </option>
+              </select>
+
+            </div>
+          </div>
+
+          <div className="col-7"
+            style={{ borderLeft: "1px solid #e7aa8d" }}
+          >
+            <h2 className="text-center font-weight-bolder mt-5">PRODUCT</h2>
+            <div className="row d-flex flex-wrap justify-content-center">
+              {this.renderProducts()}
+            </div>
+          </div>
+
+        </div>
+
+        <div className="d-flex justify-content-center flex-row align-items-center mt-5">
+          {this.PageHandler()}
+        </div>
+
+
+        {/* <div className="row p-4">
 
           <div className="col-3">
             <select className="justify-item-center form-control"
@@ -418,12 +499,12 @@ class Home extends React.Component {
               </TextField>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="row">
+        {/* <div className="row">
           <div className="col-2"></div>
           <div className='col-4' >
-            {/* <h4 className="font-weight-bold text-center text-white">Sort By</h4> */}
+           
             <select
               className="justify-item-center form-control"
               value={this.state.search.orderBy}
@@ -438,7 +519,7 @@ class Home extends React.Component {
           </div>
 
           <div className='col-4' >
-            {/* <h4 className="font-weight-bold text-center text-white">Sort By</h4> */}
+            
             <select
               className="justify-item-center form-control"
               value={this.state.search.sortBy}
@@ -449,18 +530,18 @@ class Home extends React.Component {
             </select>
           </div>
           <div className="col-2"></div>
-        </div>
+        </div> */}
 
-        <div className="container">
+        {/* <div className="container">
           <h2 className="text-center font-weight-bolder mt-5">PRODUCT</h2>
           <div className="row d-flex flex-wrap justify-content-center">
             {this.renderProducts()}
           </div>
-        </div>
+        </div> */}
 
-        <div className="d-flex justify-content-center flex-row align-items-center">
+        {/* <div className="d-flex justify-content-center flex-row align-items-center">
           {this.PageHandler()}
-        </div>
+        </div> */}
 
 
       </div>

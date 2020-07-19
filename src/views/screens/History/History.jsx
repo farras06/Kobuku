@@ -66,12 +66,12 @@ class History extends React.Component {
 
         Axios.put(`${API_URL}/transaction/transfer/${transactionId}`, formData)
             .then((res) => {
-                swal("Success!", "Your item has been edited", "success");
+                swal("Success!", "Your Transfer Receipt has been Uploaded", "success");
                 this.setState({ modalOpenTranser: false });
                 this.getUserTransaction();
             })
             .catch((err) => {
-                swal("Error!", "Your item could not be edited", "error");
+                swal("Error!", "Fail to Upload Your Transfer Receipt", "error");
                 console.log(err);
             });
     };
@@ -97,6 +97,7 @@ class History extends React.Component {
                         }}
                     >
                         <td> {idx + 1} </td>
+                        <td> {id} </td>
                         <td> {purchaseDate} </td>
                         <td> {confirmDate} </td>
                         <td> {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(totalPrice)} </td>
@@ -200,6 +201,7 @@ class History extends React.Component {
                         <thead>
                             <tr>
                                 <th>NO</th>
+                                <th>Transaction No</th>
                                 <th>Transaction Date</th>
                                 <th>Completed Date</th>
                                 <th>Total Price</th>
@@ -234,7 +236,7 @@ class History extends React.Component {
                                 </img>
                             </div>
 
-                            {this.state.status != "accepted" ?
+                            {(this.state.status != "accepted") ?
                                 <div className="col-6 mt-3">
                                     Image :
                                     <input className="mt-3 ml-4"
@@ -258,7 +260,7 @@ class History extends React.Component {
                                     </ButtonUI>
                                 </div>
 
-                                {this.state.status != "accepted" ?
+                                {(this.state.status != "accepted") ?
 
                                     <div className=" col-5 ">
                                         <ButtonUI

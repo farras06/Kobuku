@@ -7,7 +7,7 @@ import Axios from "axios"
 import logo from "../../../assets/images/Showcase/logo.png"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons/";
+import { faShoppingCart, faHome, faSignOutAlt } from "@fortawesome/free-solid-svg-icons/";
 import {
   Dropdown,
   DropdownItem,
@@ -69,7 +69,6 @@ class Navbar extends React.Component {
       <div>
         <div
           className="d-flex flex-row justify-content-between align-items-center py-4 navbar-container navbar-home-bg"
-
         >
           <div className="logo-text col-2" style={{ alignItems: "center", alignContent: "center", }} >
             <Link to="/">
@@ -81,6 +80,17 @@ class Navbar extends React.Component {
               Kobuku
           </div>
 
+          <div className="logo-text col-8" style={{ alignItems: "center", alignContent: "center", }} >
+            <Link
+              style={{ height: "70px", width: "70px", color: "black" }}
+              to="/"
+            > <FontAwesomeIcon
+                icon={faHome}
+              />
+              HOME
+            </Link>
+          </div>
+
           <div className="d-flex flex-row align-items-center col-2">
             {this.props.user.id ? (
               <>
@@ -89,7 +99,7 @@ class Navbar extends React.Component {
                   isOpen={this.state.dropdownOpen}
                 >
                   <DropdownToggle tag="div" className="d-flex">
-                    <FontAwesomeIcon icon={faUser} style={{ fontSize: 24 }} />
+                    <FontAwesomeIcon icon={faUser} style={{ fontSize: 24, cursor: "pointer" }} />
                     <p className="small ml-3 mr-4">{this.props.user.username}</p>
                   </DropdownToggle>
 
@@ -110,7 +120,7 @@ class Navbar extends React.Component {
                           style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/member"
                         >
-                          Members
+                          Users
                     </Link>
                       </DropdownItem>
 
@@ -139,7 +149,11 @@ class Navbar extends React.Component {
                           to="/"
                         >
                           Logout
-                    </Link>
+                          <FontAwesomeIcon
+                            icon={faSignOutAlt}
+                            className="ml-2"
+                          />
+                        </Link>
                       </DropdownItem>
 
                     </DropdownMenu>) :
@@ -159,7 +173,7 @@ class Navbar extends React.Component {
                           style={{ color: "inherit", textDecoration: "none" }}
                           to="/history"
                         >
-                          History
+                          Payment
                     </Link>
                       </DropdownItem>
 
@@ -179,7 +193,11 @@ class Navbar extends React.Component {
                           to="/"
                         >
                           Logout
-                    </Link>
+                          <FontAwesomeIcon
+                            icon={faSignOutAlt}
+                            className="ml-2"
+                          />
+                        </Link>
                       </DropdownItem>
 
                     </DropdownMenu>)

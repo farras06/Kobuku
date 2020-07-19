@@ -4,6 +4,10 @@ import "./Cart.css";
 
 import { Table, Alert } from "reactstrap";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+
+
 import Axios from "axios";
 import { API_URL } from "../../../constants/API";
 import ButtonUI from "../../components/Button/Button";
@@ -40,46 +44,101 @@ class Cart extends React.Component {
 
   renderCartData = () => {
     return this.state.cartData.map((val, idx) => {
-      const { quantity, product, id } = val;
-      const { productName, image, price } = product;
+      const { quantity, product, id, stockUser } = val;
+      //const { productName, image, price} = product;
       return (
         <tr>
           <td>{idx + 1}</td>
-          <td>{productName}</td>
-          <td>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(price)}</td>
+          <td>{product.productName}</td>
+          <td>{new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(product.price)}</td>
           <td>{quantity}</td>
           <td>
             {" "}
             <img
-              src={image}
+              src={product.image}
               alt=""
               style={{ width: "100px", height: "200px", objectFit: "contain" }}
             />{" "}
           </td>
-          <td>
-            <ButtonUI
-              type="outlined"
-              onClick={() => this.deleteCartHandler(id)}
-            >
-              Delete Item
+
+          <tr>
+            <td>
+              <ButtonUI
+                type="outlined"
+                onClick={() => this.deleteCartHandler(id)}
+              >
+                Delete Item
             </ButtonUI>
-          </td>
+            </td>
+
+            {product.stockUser <= 1 ? null :
+              <td>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  type="outlined"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => this.addQuantityHandler(id, product.id)}
+                >
+                </FontAwesomeIcon>
+              </td>
+            }
+
+            {quantity <= 1 ? null :
+              <td>
+                <FontAwesomeIcon
+                  icon={faMinus}
+                  style={{ cursor: "pointer" }}
+                  type="outlined"
+                  onClick={() => this.reduceQuantityHandler(id, product.id)}
+                >
+                </FontAwesomeIcon>
+              </td>
+
+            }
+
+          </tr>
         </tr>
       );
     });
   };
 
-  deleteCartHandler = (id) => {
-    Axios.delete(`${API_URL}/cart/deleteCart/${id}`)
+  addQuantityHandler = (id, productId) => {
+    Axios.put(`${API_URL}/cart/addQuantity/${id}/${productId}`)
       .then((res) => {
         console.log(res.data)
         this.props.itemInCart(this.props.user.id);
+        swal("Succes!", "Item Added to Your Cart", "success")
         this.getCartData();
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  reduceQuantityHandler = (id, productId) => {
+    Axios.put(`${API_URL}/cart/reduceQuantity/${id}/${productId}`)
+      .then((res) => {
+        console.log(res.data)
+        this.props.itemInCart(this.props.user.id);
+        swal("Success!", "Item Reduce From Your Cart", "success")
+        this.getCartData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  deleteCartHandler = (id) => {
+    Axios.delete(`${API_URL}/cart/deleteCart/${id}`)
+      .then((res) => {
+        console.log(res)
+        swal("Success!", "Items Remove From Your Cart 😔😔", "success")
+        this.getCartData();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   componentDidMount() {
     this.getCartData();
@@ -186,7 +245,7 @@ class Cart extends React.Component {
                   console.log(err)
                 })
             })
-            swal("Success!", "Silahkan ke menu payment untuk membayar", "success")
+            swal("Success!", "Go to Payment to Complete Your Transaction", "success")
             this.setState({ cartData: '' })
           })
       })

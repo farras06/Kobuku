@@ -69,8 +69,8 @@ class Report extends React.Component {
                                 datasets: [
                                     {
                                         label: 'Sold',
-                                        backgroundColor: `rgba(75,192,192,1)`,
-                                        borderColor: 'rgba(255, 99, 132,1)',
+                                        backgroundColor: `#e88354`,
+                                        borderColor: '#e7aa8d',
                                         borderWidth: 5,
                                         data: [...this.state.reportData.datasets[0].data, value.sold]
                                     }
@@ -94,8 +94,8 @@ class Report extends React.Component {
                                 datasets: [
                                     {
                                         label: 'Sold',
-                                        backgroundColor: `rgba(75,192,192,1)`,
-                                        borderColor: 'rgba(255, 99, 132,1)',
+                                        backgroundColor: `#e88354`,
+                                        borderColor: '#e7aa8d',
                                         borderWidth: 5,
                                         data: [...this.state.reportData.datasets[0].data, value.sold]
                                     }
@@ -135,7 +135,7 @@ class Report extends React.Component {
                 options={{
                     title: {
                         display: true,
-                        text: 'Sold',
+                        text: 'Product Sold',
                         fontSize: 20,
                     },
                     legend: {
@@ -165,7 +165,12 @@ class Report extends React.Component {
                         >
                             Filter The Report</h3>
 
-                        <div className="mt-4">
+                        <h5
+                            style={{ textAlign: "left" }}
+                        >
+                            Product Name</h5>
+
+                        <div className="mt-4 mb-5">
                             <TextField
                                 value={this.state.search.productName}
                                 onChange={(e) => this.inputHandler(e, "productName", "search")}
@@ -176,7 +181,12 @@ class Report extends React.Component {
                             </TextField>
                         </div>
 
-                        <div className="mt-4">
+                        <h5
+                            style={{ textAlign: "left" }}
+                        >
+                            Category</h5>
+
+                        <div className="mt-4 mb-5">
                             <select className="justify-item-center form-control"
                                 value={this.state.search.categoryName}
                                 onClick={(e) => { this.getReportData(this.state.search.categoryName) }}
@@ -187,7 +197,12 @@ class Report extends React.Component {
                             </select>
                         </div>
 
-                        <div className="mt-4">
+                        <h5
+                            style={{ textAlign: "left" }}
+                        >
+                            Orientation</h5>
+
+                        <div className="mt-4 mb-5">
                             <select
                                 className="justify-item-center form-control"
                                 value={this.state.search.sortBy}

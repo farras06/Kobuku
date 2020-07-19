@@ -46,6 +46,7 @@ class ProductDetails extends React.Component {
                                 console.log(res.data);
                                 swal("Add to cart", "New item has been added to your cart", "success");
                                 this.props.itemInCart(this.props.user.id);
+                                this.getProductData()
                             })
                             .catch((err) => {
                                 console.log(err);
@@ -56,6 +57,7 @@ class ProductDetails extends React.Component {
                                 console.log(res)
                                 swal("Add to cart", "Quantity item has been added to your cart", "success")
                                 this.props.itemInCart(this.props.user.id);
+                                this.getProductData()
                             })
                             .catch((err) => {
                                 console.log(err);
@@ -65,7 +67,7 @@ class ProductDetails extends React.Component {
         }
     };
 
-    componentDidMount() {
+    getProductData = () => {
         Axios.get(`${API_URL}/products/getProductCard/${this.props.match.params.productId}`)
             .then(res => {
                 this.setState({ productData: res.data })
@@ -74,6 +76,10 @@ class ProductDetails extends React.Component {
             .catch(err => {
                 console.log(err)
             })
+    }
+
+    componentDidMount() {
+        this.getProductData()
     }
 
     render() {
@@ -115,9 +121,12 @@ class ProductDetails extends React.Component {
                             <p className="mt-4">{description}</p>
 
                             <div className="d-flex flex-row mt-4">
-                                <ButtonUI
-                                    onClick={this.addToCartHandler}
-                                >Add to card </ButtonUI>
+
+                                {stockUser <= 1 ? null :
+                                    <ButtonUI
+                                        onClick={this.addToCartHandler}
+                                    >Add to card </ButtonUI>
+                                }
                                 <ButtonUI className="ml-4" type="outlined"
                                     onClick={this.addToWishListHandler}
                                 >
