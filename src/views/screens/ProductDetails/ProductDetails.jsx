@@ -125,13 +125,9 @@ class ProductDetails extends React.Component {
                                 {stockUser <= 1 ? null :
                                     <ButtonUI
                                         onClick={this.addToCartHandler}
-                                    >Add to card </ButtonUI>
+                                    >Add to Cart </ButtonUI>
                                 }
-                                <ButtonUI className="ml-4" type="outlined"
-                                    onClick={this.addToWishListHandler}
-                                >
-                                    Add to Wish List
-                                </ButtonUI>
+
                             </div>
                         </div>
                     </div>

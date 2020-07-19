@@ -118,6 +118,15 @@ class Navbar extends React.Component {
                       <DropdownItem>
                         <Link
                           style={{ color: "inherit", textDecoration: "none" }}
+                          to="/editprofile"
+                        >
+                          Edit Profile
+                    </Link>
+                      </DropdownItem>
+
+                      <DropdownItem>
+                        <Link
+                          style={{ color: "inherit", textDecoration: "none" }}
                           to="/admin/member"
                         >
                           Users
@@ -159,14 +168,6 @@ class Navbar extends React.Component {
                     </DropdownMenu>) :
 
                     (<DropdownMenu className="mt-2">
-                      <DropdownItem>
-                        <Link
-                          style={{ color: "inherit", textDecoration: "none" }}
-                          to="/wishlist"
-                        >
-                          Wish List
-                    </Link>
-                      </DropdownItem>
 
                       <DropdownItem>
                         <Link

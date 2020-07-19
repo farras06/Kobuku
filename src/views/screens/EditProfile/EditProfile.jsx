@@ -62,24 +62,18 @@ class EditProfile extends React.Component {
             swal("Fail", "Fill all the empty field", "error")
         } if (newPassword != newRePassword) {
             swal("Fail", "New Password isn't Match", "error")
+        } if (this.props.user.verified == 0) {
+            swal("Fail", "Your Account is not Verified, Verified Your Account First", "error")
         }
 
-        if ((username != "" || fullName != "" || oldPassword != "" || newPassword != "" || newRePassword != "" || email != "" || address != "") && (newPassword == newRePassword)) {
+        if ((username != "" || fullName != "" || oldPassword != "" || newPassword != "" || newRePassword != "" || email != "" || address != "") && (newPassword == newRePassword) && (this.props.user.verified != 0)) {
             this.props.onEditProfile(newUser)
         }
-
-
-
-
     };
-
-
 
     checkboxHandler = (e, form) => {
         const { checked } = e.target;
-
         console.log(checked);
-
         this.setState({
             [form]: {
                 ...this.state[form],
@@ -87,6 +81,17 @@ class EditProfile extends React.Component {
             },
         });
     };
+
+    resendVerificationHandler = () => {
+        Axios.get(`${API_URL}/users/verifyAgain/${this.props.user.username}`)
+            .then((res) => {
+                console.log(res)
+                swal("Success!", "Your Email Verification has been Resend", "success")
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     renderAuthComponent = () => {
         return (
@@ -159,7 +164,7 @@ class EditProfile extends React.Component {
                         className="mt-4"
                     >
                         Save
-            </ButtonUI>
+                    </ButtonUI>
                 </div>
             </div>
         );
@@ -176,9 +181,25 @@ class EditProfile extends React.Component {
                         style={{ border: "1px solid black ", padding: "10px", borderRadius: "10px" }}
                     >
                         <h3> Current Profile : </h3>
-                        <p className="mt-4"> Your Current Information</p>
 
+                        {this.props.user.verified == 1 ?
+                            <p className="mt-4" style={{ textAlign: "center" }}> Your Account is Verified</p> :
+                            <p className="mt-4" style={{ textAlign: "center" }}> Your Account is Not Verified</p>
+                        }
                         <center>
+
+                            {this.props.user.verified != 1 ?
+                                <div>
+                                    <ButtonUI
+                                        type="contained"
+                                        onClick={() => this.resendVerificationHandler()}
+                                        className="mt-4"
+                                    >
+                                        Resend Verification
+                            </ButtonUI>
+                                </div> : null
+                            }
+
 
                             <div className="d-flex flex-column mt-5" style={{ height: "60px", width: "80%", marginTop: "20px", borderRadius: "8px", border: "1px solid wheat" }}>
                                 <div style={{ borderTopLeftRadius: "8px", borderTopRightRadius: "8px", backgroundColor: "#fcd4c4" }}> <h6>Username</h6></div>

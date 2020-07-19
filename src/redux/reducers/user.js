@@ -13,13 +13,14 @@ const init_state = {
   searchCategory: [],
   role: "",
   totalPrice: 0,
-  cartItem: 0
+  cartItem: 0,
+  verified: 0
 };
 
 export default (state = init_state, action) => {
   switch (action.type) {
     case ON_LOGIN_SUCCESS:
-      const { username, fullName, email, id, role, address } = action.payload;
+      const { username, fullName, email, id, role, address, verified } = action.payload;
       return {
         ...state,
         username,
@@ -28,7 +29,8 @@ export default (state = init_state, action) => {
         address,
         id,
         cookieChecked: true,
-        role
+        role,
+        verified
       };
 
     case ON_LOGIN_FAIL:

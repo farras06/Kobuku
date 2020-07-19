@@ -1,5 +1,7 @@
 import React from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
+import ReactDOM from 'react-dom';
+import { SocialMediaIconsReact } from 'social-media-icons-react';
 
 class Footer extends React.Component {
     render() {
@@ -12,7 +14,7 @@ class Footer extends React.Component {
                         <MDBRow className="py-4 d-flex align-items-center">
                             <MDBCol md="6" lg="5" className="text-center text-md-left mb-4 mb-md-0">
                                 <h6 className="mb-0 white-text">
-                                    Get connected with us on social networks!
+                                    Kobuku...  Reader Always Reading !!
                                 </h6>
                             </MDBCol>
                             <MDBCol md="6" lg="7" className="text-center text-md-right">
@@ -52,13 +54,13 @@ class Footer extends React.Component {
                             </h6>
                             <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
                             <p>
-                                <a href="#!">Fast Shipping</a>
+                                <a>Fast Shipping</a>
                             </p>
                             <p>
-                                <a href="#!">100% Refund</a>
+                                <a>100% Refund</a>
                             </p>
                             <p>
-                                <a href="#!">24/7 Support</a>
+                                <a>24/7 Support</a>
                             </p>
                         </MDBCol>
                         <MDBCol md="3" lg="2" xl="2" className="mb-4">
@@ -73,7 +75,7 @@ class Footer extends React.Component {
                                 <a href="#!">Become an Affiliate</a>
                             </p>
                             <p>
-                                <a href="#!">Shipping Rates</a>
+                                <a href="#!">Frequently Asked Question</a>
                             </p>
                             <p>
                                 <a href="#!">Help</a>
@@ -85,10 +87,10 @@ class Footer extends React.Component {
                             </h6>
                             <hr className="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style={{ width: "60px" }} />
                             <p>
-                                <i className="fa fa-home mr-3" /> New York, NY 10012, US
+                                <i className="fa fa-home mr-3" /> Jakarta ,Indonesia
                             </p>
                             <p>
-                                <i className="fa fa-envelope mr-3" /> info@example.com
+                                <i className="fa fa-envelope mr-3" /> adminganteng@kobuku.com
                             </p>
                             <p>
                                 <i className="fa fa-phone mr-3" /> + 01 234 567 88
@@ -101,7 +103,7 @@ class Footer extends React.Component {
                 </MDBContainer>
                 <div className="footer-copyright text-center py-3">
                     <MDBContainer fluid>
-                        &copy; {new Date().getFullYear()} Copyright: <a href="https://www.MDBootstrap.com"> MDBootstrap.com </a>
+                        &copy; {new Date().getFullYear()} Copyright: <a href="https://kobukubuku.com"> kobukubuku.com </a>
                     </MDBContainer>
                 </div>
             </MDBFooter>

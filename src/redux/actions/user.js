@@ -79,6 +79,7 @@ export const EditProfileHandler = (userData) => {
     Axios.put(`${API_URL}/users/editProfile/${oldPassword}/${newPassword}`, userData)
       .then((res) => {
         console.log(res.data);
+        swal("Success", "Your Profile has been Updated", "success");
         dispatch({
           type: ON_LOGIN_SUCCESS,
           payload: res.data,

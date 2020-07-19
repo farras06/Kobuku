@@ -198,6 +198,10 @@ class Cart extends React.Component {
               <td> Total Price   </td>
               <td className="ml-4"> {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(this.state.totalPrice)} </td>
             </tr>
+            <tr>
+              <td> Your Items will be Delivered to </td>
+              <td className="ml-4"> {this.props.user.address}  </td>
+            </tr>
           </tfoot>
         </Table>
 
